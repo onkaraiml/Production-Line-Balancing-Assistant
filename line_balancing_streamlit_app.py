@@ -367,26 +367,33 @@ def display_workstation_flow(stations_df):
         time = row["Station Time"]
         utilization = row["Utilization %"]
 
+        # Strong color mapping
         if utilization >= 95:
-            color = "#78350f"   # softer amber (warning, not error)
-        elif utilization <= 50:
-             color = "#1e3a8a"   # keep blue
+            bg_color = "#b91c1c"  # strong red
+        elif utilization >= 80:
+            bg_color = "#ea580c"  # orange
+        elif utilization >= 60:
+            bg_color = "#1d4ed8"  # blue
         else:
-             color = "#1f2937"
+            bg_color = "#374151"  # gray
 
-        st.markdown(f"""
-        <div style="
-            padding:12px;
-            margin-bottom:8px;
-            border-radius:10px;
-            background-color:{color};
-            border:1px solid #2d3748;
-            font-size:16px;
-        ">
-            <b>{ws}</b> → [{tasks}] → {time} min 
-            &nbsp;&nbsp; | &nbsp;&nbsp; Utilization: {utilization}%
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(
+            f"""
+            <div style="
+                background-color: {bg_color};
+                padding: 14px;
+                border-radius: 10px;
+                margin-bottom: 10px;
+                color: white;
+                font-weight: 500;
+                font-size: 15px;
+            ">
+            <b>{ws}</b> → [{tasks}] → {time} min  
+            | Utilization: {utilization:.2f}%
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 # 🔥 ADD THIS FUNCTION HERE
 def apply_scenario_changes(task_df: pd.DataFrame, new_output: float = None, selected_task: str = None, new_task_time: float = None):
     scenario_task_df = task_df.copy()
