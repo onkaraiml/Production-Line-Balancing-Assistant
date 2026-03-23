@@ -8,6 +8,28 @@ import matplotlib.pyplot as plt
 import networkx as nx
 from openpyxl import Workbook
 
+st.markdown("""
+<style>
+.kpi-card {
+    background: #0f172a;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid #1e293b;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+.kpi-title {
+    color: #94a3b8;
+    font-size: 14px;
+}
+.kpi-value {
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: bold;
+}
+</style>
+""", unsafe_allow_html=True)
+
 st.set_page_config(page_title="Production Line Optimization Assistant", layout="wide")
 if "analysis_done" not in st.session_state:
     st.session_state.analysis_done = False
@@ -350,7 +372,14 @@ def export_results_excel(task_df: pd.DataFrame, prod_df: pd.DataFrame, results: 
     wb.save(output)
     output.seek(0)
     return output.getvalue()
-
+    
+def kpi_card(title, value):
+    st.markdown(f"""
+    <div class="kpi-card">
+        <div class="kpi-title">{title}</div>
+        <div class="kpi-value">{value}</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 # -----------------------------
 # UI
