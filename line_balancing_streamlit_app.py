@@ -514,30 +514,22 @@ if st.session_state.analysis_done:
     st.subheader("Key Performance Indicators")
 
     k1, k2, k3, k4 = st.columns(4)
+    with k1:
+        kpi_card("Cycle Time", f'{results["cycle_time"]} min/unit')
+    with k2:
+        kpi_card("Line Efficiency", f'{results["efficiency"]}%')
+    with k3:
+        kpi_card("Actual Workstations", f'{results["actual_ws"]}')
+    with k4:
+        kpi_card("Total Idle Time", f'{results["total_idle"]} min')
 
-with k1:
-    kpi_card("Cycle Time", f'{results["cycle_time"]} min/unit')
-
-with k2:
-    kpi_card("Line Efficiency", f'{results["efficiency"]}%')
-
-with k3:
-    kpi_card("Actual Workstations", f'{results["actual_ws"]}')
-
-with k4:
-    kpi_card("Total Idle Time", f'{results["total_idle"]} min')
-
-
-k5, k6, k7 = st.columns(3)
-
-with k5:
-    kpi_card("Total Work Content", f'{results["total_work_content"]} min')
-
-with k6:
-    kpi_card("Theoretical Min Workstations", f'{results["theoretical_min_ws"]}')
-
-with k7:
-    kpi_card("Balance Delay", f'{results["balance_delay"]}%')
+    k5, k6, k7 = st.columns(3)
+    with k5:
+        kpi_card("Total Work Content", f'{results["total_work_content"]} min')
+    with k6:
+        kpi_card("Theoretical Min Workstations", f'{results["theoretical_min_ws"]}')
+    with k7:
+        kpi_card("Balance Delay", f'{results["balance_delay"]}%')
 
     st.subheader("Workstation Allocation")
     st.dataframe(results["stations"], use_container_width=True)
@@ -563,10 +555,7 @@ with k7:
         fig2 = workstation_bar_figure(results["stations"], results["cycle_time"])
         st.pyplot(fig2)
 
-    
-
     st.subheader("Engineering Insights")
-
 
     stations_df = results["stations"]
     max_util = stations_df["Utilization %"].max()
@@ -607,14 +596,11 @@ with k7:
                 key="scenario_task_select"
             )
 
-        # Show task-time input only when a task is selected
         if selected_task != "None":
             current_task_time = float(
                 task_df.loc[task_df["Task"] == selected_task, "Time (min)"].values[0]
             )
-
             st.info(f"Current time for Task {selected_task}: {current_task_time} min")
-
             scenario_task_time = st.number_input(
                 f"New Time for Task {selected_task} (min)",
                 min_value=0.1,
@@ -630,6 +616,7 @@ with k7:
             "Run Scenario Simulation",
             use_container_width=True
         )
+
     if run_scenario:
         scenario_task_df, scenario_required_output = apply_scenario_changes(
             task_df,
@@ -649,7 +636,6 @@ with k7:
         st.subheader("Scenario KPI Comparison")
 
         s1, s2, s3, s4 = st.columns(4)
-
         s1.metric(
             "Cycle Time",
             f'{scenario_results["cycle_time"]} min/unit',
@@ -673,7 +659,6 @@ with k7:
 
         st.subheader("Scenario Workstation Allocation")
         st.dataframe(scenario_results["stations"], use_container_width=True)
-
         display_workstation_flow(scenario_results["stations"])
 
         st.subheader("Scenario Impact Summary")
