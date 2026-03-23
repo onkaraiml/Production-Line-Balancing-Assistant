@@ -48,24 +48,7 @@ if "base_task_df" not in st.session_state:
 
 if "base_prod_df" not in st.session_state:
     st.session_state.base_prod_df = None
-st.markdown("""
-<style>
-div[data-testid="stMetric"] {
-    background-color: #111827;
-    border: 1px solid #2d3748;
-    padding: 16px;
-    border-radius: 14px;
-    text-align: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-}
-div[data-testid="stMetricLabel"] {
-    justify-content: center;
-}
-div[data-testid="stMetricValue"] {
-    justify-content: center;
-}
-</style>
-""", unsafe_allow_html=True)
+
 
 
 # -----------------------------
@@ -532,49 +515,29 @@ if st.session_state.analysis_done:
 
     k1, k2, k3, k4 = st.columns(4)
 
-    with k1:
-        st.metric(
-            label="Cycle Time",
-            value=f'{results["cycle_time"]} min/unit'
-        )
+with k1:
+    kpi_card("Cycle Time", f'{results["cycle_time"]} min/unit')
 
-    with k2:
-        st.metric(
-            label="Line Efficiency",
-            value=f'{results["efficiency"]}%'
-        )
+with k2:
+    kpi_card("Line Efficiency", f'{results["efficiency"]}%')
 
-    with k3:
-        st.metric(
-            label="Actual Workstations",
-            value=f'{results["actual_ws"]}'
-        )
+with k3:
+    kpi_card("Actual Workstations", f'{results["actual_ws"]}')
 
-    with k4:
-        st.metric(
-            label="Total Idle Time",
-            value=f'{results["total_idle"]} min'
-        )
+with k4:
+    kpi_card("Total Idle Time", f'{results["total_idle"]} min')
 
-    k5, k6, k7 = st.columns(3)
 
-    with k5:
-        st.metric(
-            label="Total Work Content",
-            value=f'{results["total_work_content"]} min'
-        )
+k5, k6, k7 = st.columns(3)
 
-    with k6:
-        st.metric(
-            label="Theoretical Min Workstations",
-            value=f'{results["theoretical_min_ws"]}'
-        )
+with k5:
+    kpi_card("Total Work Content", f'{results["total_work_content"]} min')
 
-    with k7:
-        st.metric(
-            label="Balance Delay",
-            value=f'{results["balance_delay"]}%'
-        )
+with k6:
+    kpi_card("Theoretical Min Workstations", f'{results["theoretical_min_ws"]}')
+
+with k7:
+    kpi_card("Balance Delay", f'{results["balance_delay"]}%')
 
     st.subheader("Workstation Allocation")
     st.dataframe(results["stations"], use_container_width=True)
